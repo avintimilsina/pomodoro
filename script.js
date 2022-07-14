@@ -85,7 +85,7 @@ function displayTime(seconds, element) {
 }
 const pomodoroTime = document.getElementById("pomodoroTime");
 const shortBreakTime = document.getElementById("shortBreakTime");
-const longBreakTime = document.getElementB  yId("longBreakTime");
+const longBreakTime = document.getElementBId("longBreakTime");
 
 const pomodoroButton = document.getElementById("pomodoroButton");
 const shortBreakButton = document.getElementById("shortBreakButton");
