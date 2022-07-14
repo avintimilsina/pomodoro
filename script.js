@@ -63,13 +63,48 @@ function timer(seconds) {
 
   const timerInterval = setInterval(function () {
     const secondsLeft = Math.round((then - Date.now()) / 1000);
-    console.log(secondsLeft);
+    displayTime(secondsLeft, pomodoroTime);
+    displayTime(secondsLeft,shortBreakTime);
+    displayTime(secondsLeft,longBreakTime);
 
     if (secondsLeft < 1) {
       clearInterval(timerInterval);
     }
-  
+
   }, 1000);
 
 };
-timer(2);
+
+function displayTime(seconds, element) {
+  const minute = Math.floor(seconds / 60);
+  const second = seconds % 60;
+
+  console.log({ minute, second });
+
+  element.innerText = minute + " : " + second;
+}
+const pomodoroTime = document.getElementById("pomodoroTime");
+const shortBreakTime = document.getElementById("shortBreakTime");
+const longBreakTime = document.getElementB  yId("longBreakTime");
+
+const pomodoroButton = document.getElementById("pomodoroButton");
+const shortBreakButton = document.getElementById("shortBreakButton");
+const longBreakButton = document.getElementById("longBreakButton");
+
+pomodoroButton.addEventListener("click", function () {
+  const pomodoroTotalTime = 1500;
+  timer(pomodoroTotalTime);
+});
+
+shortBreakButton.addEventListener("click", function () {
+  const shortBreakTotalTime = 300;
+  timer(shortBreakTotalTime);
+});
+longBreakButton.addEventListener("click", function () {
+  const longBreakTotalTime = 900;
+  timer(longBreakTotalTime);
+});
+
+
+
+
