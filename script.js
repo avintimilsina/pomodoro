@@ -16,6 +16,11 @@ const pomodoroButton = document.getElementById("pomodoroButton");
 const shortBreakButton = document.getElementById("shortBreakButton");
 const longBreakButton = document.getElementById("longBreakButton");
 
+const pomodoroStat = document.getElementById("pomodoro-stat");
+const breakStat = document.getElementById("break-stat");
+pomodoroStat.innerText = window.localStorage.getItem("pomodoroTime") ?? 0;
+breakStat.innerText = window.localStorage.getItem("breakTime") ?? 0;
+
 const tabs = [shortBreakTab, longBreakTab, pomodoroTab];
 const contents = [pomodoroContent, shortBreakContent, longBreakContent];
 
@@ -56,13 +61,20 @@ function convertToTwoDigits(num) {
 
 let timerInterval;
 
-function timer(seconds, element, button) {
+function timer(seconds, element, button, identifier) {
   const now = Date.now();
   const then = now + seconds * 1000;
 
   timerInterval = setInterval(function () {
     const secondsLeft = Math.round((then - Date.now()) / 1000);
     displayTime(secondsLeft, element);
+
+    window.localStorage.setItem(
+      identifier,
+      1 + +window.localStorage.getItem(identifier)
+    );
+
+    updateLocalStorage();
 
     if (secondsLeft < 1) {
       clearInterval(timerInterval);
@@ -76,15 +88,14 @@ function displayTime(seconds, element) {
   const minute = Math.floor(seconds / 60);
   const second = seconds % 60;
 
-  console.log({ minute, second });
   element.innerText =
     convertToTwoDigits(minute) + " : " + convertToTwoDigits(second);
 }
 
-function startStop(button, timeText, totalTime) {
+function startStop(button, timeText, totalTime, identifier) {
   button.addEventListener("click", function () {
     if (button.innerText === "START") {
-      timer(totalTime, timeText, button);
+      timer(totalTime, timeText, button, identifier);
       button.innerText = "STOP";
     } else {
       clearInterval(timerInterval);
@@ -94,6 +105,11 @@ function startStop(button, timeText, totalTime) {
   });
 }
 
-startStop(pomodoroButton, pomodoroTime, 1500);
-startStop(shortBreakButton, shortBreakTime, 300);
-startStop(longBreakButton, longBreakTime, 900);
+startStop(pomodoroButton, pomodoroTime, 1500, "pomodoroTime");
+startStop(shortBreakButton, shortBreakTime, 300, "breakTime");
+startStop(longBreakButton, longBreakTime, 900, "breakTime");
+
+function updateLocalStorage() {
+  pomodoroStat.innerText = window.localStorage.getItem("pomodoroTime") ?? 0;
+  breakStat.innerText = window.localStorage.getItem("breakTime") ?? 0;
+}
